@@ -3,6 +3,7 @@ package com.example.fightcovid;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +29,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 123;
     Button login;
@@ -35,11 +38,14 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     SignInButton signInButton;
     ProgressBar bar;
+    ArrayList<String> tags=new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bar=findViewById(R.id.progressBar);
+
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
@@ -50,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestIdToken("600611008775-gbsogdpbg0b05odc559fqciuf5ogk7q3.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
 
@@ -118,8 +124,9 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("Sign In", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            tags.add("food");
 
-                            Users   users=new Users(user.getDisplayName(),user.getEmail(),null,user.getUid());
+                            Users   users=new Users(user.getDisplayName(),user.getEmail(),"Jaipur | Rajasthan",user.getUid(),tags);
                             UserDaos userDaos=new UserDaos();
                             userDaos.addUser(users);
                             updateUI(user);
